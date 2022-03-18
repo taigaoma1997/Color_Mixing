@@ -1,0 +1,33 @@
+This is the guidence to run the mixing_color.py file to find the best mixing ratio for different dyes. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# There are two targets:
+1. The mixed color is as close to the target color as possible.
+2. The final weight of dyes is maximized. 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Running steps
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Before runing:
+1. Install Anonconda: https://www.anaconda.com/ 
+2. Open Anaconda -> Spyder -> Launch, use "pip install name-of-packages" to install all necessary packages. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# When running:
+3. Open Anaconda Prmpt, go to the folder that contains both the mixing_color.py and the XXXX.csv file. 
+
+4. Run files by typing: python mixing_color.py --alpha 0.001 --delta_E 1.5 --target 46.3 -1.3 -4.6 --csv_name 11_16_batch_data --delta_E_type CIE1976
+	# Notice: 
+	0. specify --alpha, delta_E once a time 
+	1. When inputting --target, use space to separate
+	2. --csv_name takes in the file name without .csv
+ 	3. Currently support two delta_E function: CIE1976 and CIE2000. The CIE1976 calculates take the square of each LAB difference, then average the difference. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# After running:
+5. Results will automatically save to a new folder. 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Notice:
+0. Windows has some limitations of multi-core parallel computing. Currently working on it. 
+1. Make sure the file is in .csv format, and is in the same folder with mixing_color.py
+2. When run file, make sure you are typing in English format.  
+3. Specificy the delta_E and alpha each time, or else it will run the default setting(alpha=0.0001, delta_E=1.5
+4. Change the delta to get better results. You can also increase the optimization steps to get better results by changing "maxiter=2000"(2000 is the steps you want to wait, greater number means longer waiting time). 
