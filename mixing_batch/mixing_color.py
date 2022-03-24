@@ -21,8 +21,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha', type=float, default= 0.0001)
     parser.add_argument('--delta_E', type=float, default= 2)
-    parser.add_argument('--target', type=float, nargs='+',default = [40.37 ,1.51 ,-39.95])
-    parser.add_argument('--csv_name', type=str, default= '03_17')
+    parser.add_argument('--target', type=float, nargs='+',default = [46.3,-1.3,-4.6])
+    parser.add_argument('--csv_name', type=str, default= '11_16_batch_data')
     parser.add_argument('--delta_E_type', type=str, default= 'CIE1976') 
     
     args = parser.parse_args()
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     #     return deltas
     
     bounds = [(0, 1)] * len(r_data)
-    result = differential_evolution(delta_E, bounds, workers = 16, disp=True, maxiter=2, popsize=16, tol=0.001)
+    result = differential_evolution(delta_E, bounds, disp=True, maxiter=1000, popsize=16, tol=0.001)
         
     #result = optimize_mixing()
     lab = calcualte_lab(result)
@@ -139,7 +139,8 @@ if __name__ == '__main__':
     ax[0].set_xlabel('Wavelength (nm)')
     ax[0].set_ylabel('Reflection (%)')
     ax[0].set_ylim([0, 100])
-    ax[0].set_title('Total weights {:.2f}, DeltaE={:.2f}'.format(np.sum(result.x * product_weights) / np.sum(product_weights), delta_E_loss(lab, target)))
+    weights_total = np.sum(result.x * product_weights) 
+    ax[0].set_title('Total weights {:.2f}, weight ratio {:.2f} \n DeltaE={:.2f}'.format(weights_total, np.sum(result.x * product_weights) / np.sum(product_weights), delta_E_CIE1976(lab, target)))
 
     ax[1].stem(result.x)
     ax[1].set_xlabel('Batch ID')
@@ -152,5 +153,5 @@ if __name__ == '__main__':
     product_weights_ = np.insert(product_weights, 0, np.inf)
     x = np.insert(x, 0, 1)
     data['mixing weight'] = np.round(x * product_weights_, 1)
-    data.sort_values('mixing weight', ascending=False).to_csv('./{}/{}_mixing_results_{}_DeltaE_{}_alpha_{}.csv'.format(filename, filename, args.delta_E_type, thresh,args.alpha), index=None)
+    data.sort_values('mixing weight', ascending=False).to_csv('./{}/{}_mixing_results_{}_DeltaE_{}_alpha_{}_totalWeight_{}.csv'.format(filename, filename, args.delta_E_type, thresh,args.alpha, weights_total), index=None)
     print('Done')
