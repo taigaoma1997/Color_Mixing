@@ -117,7 +117,7 @@ if __name__ == '__main__':
     def optimize_mixing():
 
         bounds = [(0, 1)] * len(r_data)
-        result = differential_evolution(delta_E, bounds, disp=True, workers=num_cpu, maxiter=2, popsize=2, tol=0.001)
+        result = differential_evolution(delta_E, bounds, disp=True, workers=num_cpu, maxiter=2, popsize=16, tol=0.001)
         
         return result
 
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     plt.savefig('./{}/{}_DeltaE{}_alpha{}.png'.format(filename,  delta_E_type, Delta_E, alpha))
     
     
-    data = pd.read_csv('11_16_batch_data.csv')
+    data = pd.read_csv(csv_name+'.csv')
     x = result.x
     product_weights_ = np.insert(product_weights, 0, np.inf)
     x = np.insert(x, 0, 1)
