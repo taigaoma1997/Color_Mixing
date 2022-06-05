@@ -16,7 +16,7 @@ from os.path import exists
 alpha = 0.0001   # change the alpha factor 
 Delta_E = 2.0
 target = [46.3,-1.3,-4.6]  #
-csv_name = 'YG3_mixing_results_CIE1976_DeltaE_2.0_alpha_1e-05'  # change the name, 
+csv_name = 'YG3'  # change the name, 
 delta_E_type = 'CIE1976' # by default the delta_E_type is CIE1976
 num_cpu = 4 # specify the number of CPU cores
 min_mass = 10 # the mimimum mass, make sure they are the same unit as in the file
@@ -138,7 +138,7 @@ if __name__ == '__main__':
             else:
                 bounds[i] = (min_mass/weight, 1)
                 
-        result = differential_evolution(delta_E, bounds, disp=True, workers=num_cpu, maxiter=2, popsize=16, tol=0.001)
+        result = differential_evolution(delta_E, bounds, disp=True, workers=num_cpu, maxiter=1000, popsize=16, tol=0.001)
         
         return result
 
