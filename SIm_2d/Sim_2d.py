@@ -45,7 +45,7 @@ file_name = 'example_1d'   # Specify the saved file name, file will be saved in 
  
 structure = ['Ti3O5', 'Cr', 'Ti3O5', 'Cu', 'Ti3O5', 'Cr', 'Ti3O5'] # The thin film is recorded from top to bottom
 
-thickness = [0, 11, 100, 70, 0, 0, 0]  # specify the thickness at each thin film layer. 0 means scanning the thickness
+thickness = [0, 11, 100, 70, 200, 11, 35]  # specify the thickness at each thin film layer. 0 means scanning the thickness
     
 # Specify the thickness scanning range and scanning steps (all in nm)
 
