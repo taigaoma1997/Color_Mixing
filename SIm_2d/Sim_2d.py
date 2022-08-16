@@ -45,12 +45,8 @@ file_name = 'example_1d'   # Specify the saved file name, file will be saved in 
  
 structure = ['Ti3O5', 'Cr', 'Ti3O5', 'Cu', 'Ti3O5', 'Cr', 'Ti3O5'] # The thin film is recorded from top to bottom
 
-thickness = [0, 11, 100, 70, 200, 11, 35]  # specify the thickness at each thin film layer. 0 means scanning the thickness
-
-num_scan = [i for i in range(len(thickness)) if thickness[i] == 0]  # Examine the number of scanning thickness
-if len(num_scan) not in [1, 2, 3]:
-    raise KeyError('Please make sure there are at least 1 layer for scanning / at most 3 layers for scanning. Use 0 to specify the layer of scanning. ')
-
+thickness = [0, 11, 100, 70, 0, 0, 0]  # specify the thickness at each thin film layer. 0 means scanning the thickness
+    
 # Specify the thickness scanning range and scanning steps (all in nm)
 
 t_scan_1 = [25, 300]
@@ -62,11 +58,20 @@ t_scan_step_2 = 25
 t_scan_3 = [25, 100]
 t_scan_step_3 = 25
 
-if t_scan_1[0] >= t_scan_1[1] or t_scan_2[0] >= t_scan_2[1]  or t_scan_3[0] >= t_scan_3[1] :
-    raise KeyError('Please make sure the scanning range is reasonable.')
 
 # End of edits. Please do not change the following codes. 
 ################################################################################################################
+
+# Examine if the input are valid
+num_scan = [i for i in range(len(thickness)) if thickness[i] == 0]  # Examine the number of scanning thickness
+if len(num_scan) not in [1, 2, 3]:
+    raise KeyError('Please make sure there are at least 1 layer for scanning / at most 3 layers for scanning. Use 0 to specify the layer of scanning. ')
+if len(structure)!= len(thickness):
+    raise KeyError('Please make sure the length of structure matches the length of thickness')
+    
+if t_scan_1[0] >= t_scan_1[1] or t_scan_2[0] >= t_scan_2[1]  or t_scan_3[0] >= t_scan_3[1] :
+    raise KeyError('Please make sure the scanning range is reasonable.')
+
 
 # Set up the wavelength range (in um)
 
@@ -85,6 +90,9 @@ for i in structure:
 
 substrate = 'Glass'  # The substrate
 
+
+################################################################################################################
+# Starts calculations
 
 if len(num_scan) ==1:
     # calculating 1d scanning
