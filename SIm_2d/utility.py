@@ -132,8 +132,6 @@ def scan_1D(num_scan, t_scan_1, t_scan_step_1, structure, thickness, wavelengths
     return all_RGB 
 
 
-
-
 def scan_2D(num_scan, t_scan_1, t_scan_2, t_scan_step_1, t_scan_step_2, structure, thickness, wavelengths, nk_dict, substrate):
     # scanning 2D thickness
     
@@ -160,5 +158,57 @@ def scan_2D(num_scan, t_scan_1, t_scan_2, t_scan_step_1, t_scan_step_2, structur
     all_RGB = all_RGB[::-1]
     return all_RGB 
 
+def scan_1D_multiple(layer_1_scan, t_scan_1, t_scan_step_1, structure, thickness, wavelengths, nk_dict, substrate):
+    # scanning 1D thickness
+    
+    all_RGB = []
+    all_xyY = []
+    
+    temp_RGB = []
+    temp_xyY = []
 
+    for j in range(t_scan_1[0], t_scan_1[1]+1, t_scan_step_1):
+        for tt in layer_1_scan:
+            thickness[tt] = j
+        spec_s = spectrum(structure, thickness, theta = 0, pol = 's', wavelengths = wavelengths, nk_dict = nk_dict,  substrate = substrate)
+        spec_p = spectrum(structure, thickness, theta = 0, pol = 'p', wavelengths = wavelengths, nk_dict = nk_dict,  substrate = substrate)
+        R = (spec_s['R'] + spec_p['R'])/2
+        Lab, RGB, xyY = get_color(R, wavelengths)
+        temp_RGB.append(list(RGB))
+        temp_xyY.append(list(xyY))
+
+    all_RGB.append(temp_RGB)
+    all_xyY.append(temp_xyY)
+
+    return all_RGB 
+
+
+def scan_2D_multiple(layer_1_scan, layer_2_scan, t_scan_1, t_scan_2, t_scan_step_1, t_scan_step_2, structure, thickness, wavelengths, nk_dict, substrate):
+    # scanning 2D thickness
+    
+    all_RGB = []
+    all_xyY = []
+
+
+    for i in tqdm(range(t_scan_2[0], t_scan_2[1]+1, t_scan_step_2)):
+        for tt in layer_2_scan:
+            thickness[tt] = i
+        temp_RGB = []
+        temp_xyY = []
+
+        for j in range(t_scan_1[0], t_scan_1[1]+1, t_scan_step_1):
+            for tt in layer_1_scan:
+                thickness[tt] = j
+            spec_s = spectrum(structure, thickness, theta = 0, pol = 's', wavelengths = wavelengths, nk_dict = nk_dict,  substrate = substrate)
+            spec_p = spectrum(structure, thickness, theta = 0, pol = 'p', wavelengths = wavelengths, nk_dict = nk_dict,  substrate = substrate)
+            R = (spec_s['R'] + spec_p['R'])/2
+            Lab, RGB, xyY = get_color(R, wavelengths)
+            temp_RGB.append(list(RGB))
+            temp_xyY.append(list(xyY))
+
+        all_RGB.append(temp_RGB)
+        all_xyY.append(temp_xyY)
+
+    all_RGB = all_RGB[::-1]
+    return all_RGB 
 
